@@ -1,0 +1,385 @@
+{
+	"info": {
+		"_postman_id": "996dc90c-adee-42eb-af9f-4a0060318144",
+		"name": "Task Manager (Filtration Task)",
+		"description": "Name: Kerolos Saaid",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27667807",
+		"_collection_link": "https://www.postman.com/orbital-module-participant-44486098/workspace/my-workspace/collection/27667807-996dc90c-adee-42eb-af9f-4a0060318144?action=share&source=collection_link&creator=27667807"
+	},
+	"item": [
+		{
+			"name": "Member",
+			"item": [
+				{
+					"name": "Create Member",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"{{$randomFullName}}\",\r\n    \"email\":\"{{$randomEmail}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/member/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"member",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Member",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/member",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"member"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/member/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"member",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 404', function () {",
+									"    pm.expect(pm.response.code).to.equal(404);",
+									"})",
+									"",
+									"pm.test('Response must have Content-Type header as application/json', function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+									"})",
+									"",
+									"pm.test('Response body contains a message field', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.message).to.exist;",
+									"})",
+									"",
+									"pm.test('Response time is less than 200ms', function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"})",
+									"",
+									"pm.test('Response contains a user object with memberId, name, email, and password fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.have.property('user').that.is.an('object');",
+									"    pm.expect(responseData.user).to.have.property('memberId').that.is.a('number');",
+									"    pm.expect(responseData.user).to.have.property('name').that.is.a('string');",
+									"    pm.expect(responseData.user).to.have.property('email').that.is.a('string');",
+									"    })",
+									"",
+									"pm.test('Email format in the response body is valid', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.user.email).to.match(/^[\\w-]+@([\\w-]+\\.)+[\\w-]+$/, 'Email format is not valid');",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"{{$randomFullName}}\",\r\n    \"email\":\"{{$randomEmail}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/member/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"member",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						},
+						"description": "### Update Member Details\n\nThis endpoint is used to update the details of a specific member.\n\n#### Request Body\n\n- `name` (string, required): The updated name of the member.\n    \n\n#### Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n- `message` (string): A message indicating the success of the update.\n    \n- `user` (object):\n    - `memberId` (integer): The unique identifier of the member.\n        \n    - `name` (string): The updated name of the member.\n        \n    - `email` (string): The email address of the member.\n        \n    - `password` (string): The password of the member."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 404\", function () {",
+									"  pm.expect(pm.response.code).to.equal(404);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields - message and stack\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"    pm.expect(responseData.stack).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the stack is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.stack).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Stack should not be empty\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/member/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"member",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"memberId\":2,\r\n    \"name\":\"name{{$randomInt}}\",\r\n    \"description\":\"task description\",\r\n    \"startDate\":\"2024/07/10\",\r\n    \"endDate\":\"2024/07/10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/task/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"task",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/task/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"task",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/task/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"task",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/task/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"task",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test\",\r\n    \"description\": \"task description\",\r\n    \"status\": \"pending\",\r\n    \"startDate\": \"2024-07-12\",\r\n    \"endDate\": \"2024-07-14\",\r\n    \"memberId\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/task/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"task",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:5000"
+		}
+	]
+}
