@@ -154,5 +154,5 @@ Create a `.env` file in the root directory of the project and add the following 
 ```env
 PORT="5000"
 DB_URL="Your DB URL here"
-DB_DIALECT="Your DB Dialect here" #example: "postgresql"
+DB_DIALECT="Your DB Dialect here" #example: "postgres"
 SALT_ROUNDS="8"
